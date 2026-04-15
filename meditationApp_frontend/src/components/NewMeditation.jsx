@@ -1,109 +1,84 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Timer from './Timer';
-import { useAuth } from '../context/AuthContext'; // Import the authentication hook
-// Import CSS if necessary (snippet suggests it is)
+import { useAuth } from '../context/AuthContext';
+import { apiRequest } from '../api/apiClient';
 import './NewMeditation.css';
 
-// Meditation duration options in minutes
-const meditationDurations = [1, 2, 5, 10, 15, 30];
-
-// ✨ Base URL for the backend
-const API_BASE_URL = 'https://meditation-api-218f.onrender.com/api';
+const DURATIONS = [1, 5, 10, 15, 20, 30];
 
 const NewMeditation = () => {
-  // --- STATES AND CONTEXT ---
-  const { authToken, logout } = useAuth(); // Get the token and logout function
+  const { authToken, logout } = useAuth();
   const navigate = useNavigate();
 
   const [durationInSeconds, setDurationInSeconds] = useState(0);
-  const [isMeditating, setIsMeditating] = useState(false);
-  const [isFinished, setIsFinished] = useState(false);
-  const [experience, setExperience] = useState('');
-  const [meditationDate, setMeditationDate] = useState(new Date().toISOString().substring(0, 10)); // Default date
-  const [saveError, setSaveError] = useState('');
+  const [isMeditating, setIsMeditating]           = useState(false);
+  const [isFinished, setIsFinished]               = useState(false);
+  const [experience, setExperience]               = useState('');
+  const [meditationDate, setMeditationDate]       = useState(
+    new Date().toISOString().substring(0, 10)
+  );
+  const [saveError, setSaveError]   = useState('');
+  const [isSaving, setIsSaving]     = useState(false);
+  const [saveSuccess, setSaveSuccess] = useState(false);
 
-  // --- VIEW HANDLERS AND LOGIC ---
-
-  const selectTime = (durationMinutes) => {
-    setDurationInSeconds(durationMinutes * 60);
+  const selectTime = (minutes) => {
+    setDurationInSeconds(minutes * 60);
     setIsMeditating(true);
     setIsFinished(false);
     setSaveError('');
+    setSaveSuccess(false);
     setExperience('');
   };
 
-  const goBackToSelection = useCallback(() => {
+  const goBackToSelection = () => {
     setIsMeditating(false);
     setIsFinished(false);
     setDurationInSeconds(0);
-  }, []);
+  };
 
-  const handleFinish = useCallback(() => {
+  const handleFinish = () => {
     setIsMeditating(false);
-    setIsFinished(true); // Show the form
-  }, []);
+    setIsFinished(true);
+  };
 
-  // Form handler to save the meditation to the backend
   const handleSubmit = async (e) => {
     e.preventDefault();
     setSaveError('');
+    setIsSaving(true);
 
-    // Duration is in seconds, API expects minutes
     const durationMinutes = Math.round(durationInSeconds / 60);
 
-    if (!authToken) {
-      setSaveError('Error: Authentication token not found. Please log in again.');
-      logout();
-      return;
-    }
-
     try {
-      // 1. POST request using fetch
-      const response = await fetch(`${API_BASE_URL}/meditations`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          // ✨ USING THE JWT TOKEN
-          'Authorization': `Bearer ${authToken}`,
+      await apiRequest(
+        '/meditations',
+        {
+          method: 'POST',
+          body: JSON.stringify({
+            duration: durationMinutes,
+            date: meditationDate,
+            note: experience || null,
+          }),
         },
-        body: JSON.stringify({
-          duration: durationMinutes,
-          date: meditationDate,
-          note: experience || null, // Send null if the note field is empty
-        }),
-      });
+        authToken
+      );
 
-      // 2. Handle the response
-      const data = await response.json();
-
-      if (!response.ok) {
-        if (response.status === 401) {
-          // Invalid or expired token. Force logout.
-          logout();
-          throw new Error('Your session has expired. Please log in again.');
-        }
-        // Handle other backend errors (e.g., 400 Bad Request)
-        throw new Error(data.message || 'Unknown error saving meditation.');
-      }
-
-      // 3. If successful, redirect to history
-      alert('Meditation successfully recorded!');
-      navigate('/history');
-
+      setSaveSuccess(true);
+      setTimeout(() => navigate('/history'), 1200);
     } catch (err) {
-      console.error('Error saving meditation:', err);
-      setSaveError(err.message);
+      if (err.status === 401) {
+        logout();
+        return;
+      }
+      setSaveError(err.message || 'Error al guardar la meditación.');
+    } finally {
+      setIsSaving(false);
     }
   };
 
-
-  // --- CONDITIONAL RENDERING ---
-
-  // 1. Timer View
+  // ── Vista: Timer ──────────────────────────────────────────────────────────
   if (isMeditating) {
     return (
-      // Assuming Timer.jsx exists in the same directory
       <Timer
         initialTime={durationInSeconds}
         onFinish={handleFinish}
@@ -112,90 +87,101 @@ const NewMeditation = () => {
     );
   }
 
-  // 2. Form View (after meditation finishes)
+  // ── Vista: Formulario de registro ─────────────────────────────────────────
   if (isFinished) {
     const durationMinutes = Math.round(durationInSeconds / 60);
 
     return (
-      // Using the snippet's class: .meditation-form-container
-      <div className="meditation-form-container">
-        <h1 className="text-3xl font-bold text-green-700 mb-2">Meditation Log</h1>
-        <p className="subtitle">Save your experience to your history.</p>
+      <div className="meditation-form-container animate-in">
+        <h1>Registro de meditación</h1>
+        <p className="subtitle">Guarda tu experiencia en el historial.</p>
 
-        <form onSubmit={handleSubmit} className="space-y-6">
-          {saveError && <p className="text-red-500 text-center font-semibold border border-red-200 p-2 rounded-lg mb-4">{saveError}</p>}
+        <form onSubmit={handleSubmit}>
+          {saveSuccess && (
+            <p className="success-banner" role="status">
+              ¡Guardado! Redirigiendo al historial...
+            </p>
+          )}
+          {saveError && (
+            <p className="error-banner" role="alert">{saveError}</p>
+          )}
 
-          <div className="flex space-x-4">
-            <div className="form-group w-1/2">
-              <label htmlFor="duration" className="block text-gray-700 font-semibold mb-1">Duration (minutes):</label>
+          <div className="form-row">
+            <div className="form-group">
+              <label className="form-label" htmlFor="duration">Duración (min)</label>
               <input
                 type="number"
                 id="duration"
+                className="form-input"
                 value={durationMinutes}
                 readOnly
-                // Using Tailwind classes for a 'disabled' look
-                className="w-full p-3 border border-gray-300 rounded-lg bg-gray-100 text-gray-600 cursor-not-allowed"
               />
             </div>
-
-            <div className="form-group w-1/2">
-              <label htmlFor="date" className="block text-gray-700 font-semibold mb-1">Meditation Date:</label>
+            <div className="form-group">
+              <label className="form-label" htmlFor="date">Fecha</label>
               <input
                 type="date"
                 id="date"
+                className="form-input"
                 value={meditationDate}
                 onChange={(e) => setMeditationDate(e.target.value)}
                 required
-                className="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
               />
             </div>
           </div>
 
           <div className="form-group">
-            <label htmlFor="experience" className="block text-gray-700 font-semibold mb-1">Experience and Notes:</label>
+            <label className="form-label" htmlFor="experience">Notas (opcional)</label>
             <textarea
               id="experience"
+              className="form-input"
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
-              rows="6"
-              placeholder="Describe how you felt, what thoughts arose..."
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-green-500 focus:border-green-500"
-            ></textarea>
+              rows="5"
+              placeholder="¿Cómo te sentiste? ¿Qué observaste?"
+              style={{ resize: 'vertical' }}
+            />
           </div>
 
-          <button type="submit" className="w-full py-3 cursor-pointer bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition duration-150 shadow-md">
-            Save Meditation
-          </button>
-          <button
-            type="button"
-            onClick={goBackToSelection}
-            className="w-full py-2 mt-2 text-green-600 border border-green-600 rounded-lg hover:bg-green-100 transition duration-150"
-          >
-            Cancel and go back to time selection
-          </button>
+          <div className="form-actions">
+            <button
+              type="submit"
+              className="btn-primary"
+              disabled={isSaving || saveSuccess}
+              style={{ width: '100%' }}
+            >
+              {isSaving ? 'Guardando...' : 'Guardar meditación'}
+            </button>
+            <button
+              type="button"
+              className="btn-ghost"
+              onClick={goBackToSelection}
+              style={{ width: '100%' }}
+            >
+              Volver a selección de tiempo
+            </button>
+          </div>
         </form>
       </div>
     );
   }
 
-  // 3. Time Selection View (Default)
+  // ── Vista: Selección de duración (default) ────────────────────────────────
   return (
-    <div className="max-w-3xl mx-auto p-8 bg-white rounded-xl shadow-xl text-center mt-10">
-      <h1 className="text-3xl font-bold text-green-800 mb-6">
-        Select your meditation duration 🧘
-      </h1>
-      <p className="text-gray-600 mb-8">
-        Choose a time and let's go.
-      </p>
+    <div className="selection-container animate-in">
+      <h1 className="selection-title">¿Cuánto tiempo tienes?</h1>
+      <p className="selection-subtitle">Elige una duración y comienza.</p>
 
-      <div className="flex flex-wrap justify-center gap-4">
-        {meditationDurations.map(minutes => (
+      <div className="selection-grid">
+        {DURATIONS.map((minutes) => (
           <button
             key={minutes}
+            className="duration-btn"
             onClick={() => selectTime(minutes)}
-            className="p-4 w-28 bg-green-800 cursor-pointer text-white text-xl font-bold rounded-xl hover:bg-green-600 transition duration-150 shadow-lg transform hover:scale-105"
+            aria-label={`Meditar ${minutes} minutos`}
           >
-            {minutes} min
+            {minutes}
+            <small>min</small>
           </button>
         ))}
       </div>

@@ -1,50 +1,67 @@
 import React from 'react';
-import './Instructions.css'; // Importa el archivo CSS
+import { Link } from 'react-router-dom';
+import { useAuth } from '../context/AuthContext';
+import './Instructions.css';
 
 const Instructions = () => {
-    return (
-        <div className="instructions-container">
-            <h1>How do we practice the Letting Be Meditation?</h1>
-            <p className="intro-text">
-                Welcome! Take a few minutes to read these instructions carefully before starting your meditation practice.
-            </p>
+  const { isAuthenticated } = useAuth();
 
-            <div className="step-card">
-                <h2>Previous concepts</h2>
-                <ul>
-                    <li>Thoughts produce physical sensations.</li>
-                    <li>Emotions produce physical sensations.</li>
-                    <li>Energy is behind thoughts and emotions.</li>
-                    <li>When we stop resisting the sensations caused by thoughts and emotions, the energy behind them dissipates progressively.</li>
-                    <li>Without that energy, thoughts and emotions collapse themselves.</li>
-                    <li>When thoughts and emotions collapse, you get closer to your natural state: Peace.</li>
-                    <li>When everything is gone, Peace is the only thing that remains.</li>
-                    <li>If we feel no peace, it means we are resisting something.</li>
-                </ul>
-            </div>
+  return (
+    <div className="instructions-container animate-in">
+      <h1>Cómo practicamos el Letting Be</h1>
+      <p className="intro-text">
+        Tómate unos minutos para leer estas instrucciones con calma antes de comenzar tu práctica.
+      </p>
 
-            <div className="step-card">
-                <h2>Letting Be meditation</h2>
-                <ul>
-                    <li>Be aware that you are always having a physical experience.</li>
-                    <li>Pay atention to that physical experience. Pay atention to those physical sensations.</li>
-                    <li>See how you can stop resisting the physical sensations. Keep doing that. Keep noticing them.</li>
-                    <li>No matter what, take your atention continuously to those physical sensations and stop resisting them.</li>
-                    <li>If you find pain, stop resisting the physical sensation.</li>
-                    <li>If you find sadness, stop resisting the physical sensation.</li>
-                    <li>If you feel uncomfortable, stop resisting the physical sensation.</li>
-                    <li>If you find desire, stop resisting the physical sensation.</li>
-                    <li>If you find nothing, stop resisting the physical sensation.</li>
-                    <li>Whatever you find in the present moment, that is what you need to stop resisting.</li>
-                    <li>Keep doing that during the selected time for your meditation. Close your eyes if needed.</li>
-                </ul>
-            </div>
+      <div className="step-card">
+        <h2>Conceptos previos</h2>
+        <ul>
+          <li>Los pensamientos producen sensaciones físicas.</li>
+          <li>Las emociones producen sensaciones físicas.</li>
+          <li>La energía está detrás de los pensamientos y las emociones.</li>
+          <li>Cuando dejamos de resistir las sensaciones causadas por pensamientos y emociones, la energía que hay detrás se disipa progresivamente.</li>
+          <li>Sin esa energía, los pensamientos y emociones colapsan por sí solos.</li>
+          <li>Cuando colapsan, te acercas a tu estado natural: la Paz.</li>
+          <li>Cuando todo desaparece, la Paz es lo único que queda.</li>
+          <li>Si no sentimos paz, significa que estamos resistiendo algo.</li>
+        </ul>
+      </div>
 
-            <p className="closing-text">
-                To stop resisting means surrender. It's a habit we can build moment by moment. It takes practice. Be gentle with yourself. We all do the best we can.
-            </p>
-        </div>
-    );
+      <div className="step-card">
+        <h2>La meditación Letting Be</h2>
+        <ul>
+          <li>Sé consciente de que siempre estás teniendo una experiencia física.</li>
+          <li>Presta atención a esa experiencia. Presta atención a las sensaciones físicas.</li>
+          <li>Observa cómo puedes dejar de resistir esas sensaciones. Sigue haciéndolo. Sigue notándolas.</li>
+          <li>Pase lo que pase, lleva tu atención continuamente a esas sensaciones físicas y deja de resistirlas.</li>
+          <li>Si encuentras dolor, deja de resistir la sensación física.</li>
+          <li>Si encuentras tristeza, deja de resistir la sensación física.</li>
+          <li>Si te sientes incómodo, deja de resistir la sensación física.</li>
+          <li>Si encuentras deseo, deja de resistir la sensación física.</li>
+          <li>Si no encuentras nada, deja de resistir la sensación física.</li>
+          <li>Lo que sea que encuentres en el momento presente es lo que necesitas dejar de resistir.</li>
+          <li>Sigue haciendo esto durante el tiempo que hayas elegido para meditar. Cierra los ojos si lo necesitas.</li>
+        </ul>
+      </div>
+
+      <p className="closing-text">
+        Dejar de resistir significa rendirse. Es un hábito que podemos construir momento a momento. Requiere práctica. Sé amable contigo mismo. Todos hacemos lo mejor que podemos.
+      </p>
+
+      <div className="instructions-cta">
+        <p>¿Listo para comenzar?</p>
+        {isAuthenticated ? (
+          <Link to="/new-meditation" className="btn-primary">
+            Iniciar meditación
+          </Link>
+        ) : (
+          <Link to="/signup" className="btn-primary">
+            Crear cuenta y meditar
+          </Link>
+        )}
+      </div>
+    </div>
+  );
 };
 
 export default Instructions;

@@ -1,118 +1,158 @@
-@import "tailwindcss";
-@reference "tailwindcss";
-
+/* ─── CONTENEDOR ─────────────────────────────────────────────────────────────── */
 .history-container {
-  /* max-w: 800px; margin: 40px auto; padding: 30px; */
-  @apply max-w-4xl mx-auto p-6 md:p-8 mt-10 space-y-6;
-  
-  /* background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); font-family: 'Arial', sans-serif; */
-  background-color: var(--color-background-card);
-  @apply rounded-lg shadow-xl font-sans;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
-/* Título principal */
+/* ─── HEADER ─────────────────────────────────────────────────────────────────── */
+.history-header { margin-bottom: 2.5rem; }
+
 .history-title {
-  /* text-align: center; color: #38761d; margin-bottom: 20px; font-size: 2.2em; */
-  color: var(--color-primary-dark);
-  @apply text-4xl font-bold text-center border-b pb-4 mb-4;
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  color: var(--color-text);
+  margin: 0 0 0.5rem;
+  font-weight: 400;
 }
 
-/* --- Sección de Resumen del Tiempo Total --- */
+.history-subtitle {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  margin: 0;
+}
 
-.total-time-summary {
-  /* Estilos para el div de resumen */
-  @apply p-4 rounded-lg border text-center shadow-sm;
-  background-color: var(--color-background-light); /* Fondo suave */
+/* ─── STATS ──────────────────────────────────────────────────────────────────── */
+.history-stats {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
+  margin-bottom: 2.5rem;
+}
+
+.stat-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.5rem;
+  text-align: center;
+}
+
+.stat-value {
+  font-family: var(--font-serif);
+  font-size: 2.25rem;
+  color: var(--color-primary);
+  line-height: 1;
+  margin-bottom: 0.375rem;
+}
+
+.stat-label {
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+/* ─── LISTA ──────────────────────────────────────────────────────────────────── */
+.history-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.875rem;
+}
+
+/* ─── CARD DE MEDITACIÓN ─────────────────────────────────────────────────────── */
+.meditation-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.25rem 1.5rem;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1rem;
+  align-items: center;
+  transition: box-shadow 0.2s ease, border-color 0.2s ease;
+}
+
+.meditation-card:hover {
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.06);
   border-color: var(--color-primary-light);
 }
 
-.summary-title {
-  /* text-xl font-semibold text-green-800 mb-2 */
-  color: var(--color-primary-dark);
-  @apply text-xl font-semibold mb-2;
+.meditation-card-icon {
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  background: var(--color-bg-subtle);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+  flex-shrink: 0;
 }
 
-.summary-value {
-  /* text-4xl font-extrabold text-green-700 */
-  color: var(--color-primary-medium);
-  @apply text-4xl font-extrabold;
+.meditation-card-body { min-width: 0; }
+
+.meditation-card-date {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  margin: 0 0 0.25rem;
 }
 
-/* --- Tarjetas de Notas Individuales --- */
-
-.notes-list-wrapper {
-  /* space-y-4 */
-  @apply space-y-4;
+.meditation-card-note {
+  font-size: 0.875rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  margin: 0.375rem 0 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.note-card {
-  /* p-5 bg-white border-l-4 border-green-600 rounded-lg shadow-md flex justify-between items-start */
-  @apply p-5 rounded-lg shadow-md flex justify-between items-start transition duration-200;
-  
-  /* background-color: #f9fff8; border: 1px solid #e0e0e0; */
-  background-color: var(--color-background-card); 
-  
-  /* border-left: 5px solid #6aa84f; */
-  border-left: 4px solid var(--color-primary-medium);
+.meditation-card-duration {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  color: var(--color-primary);
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 
-.note-card:hover {
-  /* box-shadow: 0 4px 12px rgba(56, 118, 29, 0.15); transform: translateY(-2px); */
-  @apply transform -translate-y-0.5;
-  box-shadow: 0 4px 12px rgba(30, 58, 36, 0.15); /* Sombra basada en dark primary */
+.meditation-card-duration small {
+  font-family: var(--font-sans);
+  font-size: 0.75rem;
+  color: var(--color-text-muted);
+  margin-left: 0.25rem;
 }
 
-.note-info-group {
-  /* flex-grow */
-  @apply flex-grow;
-}
-
-.note-date {
-  /* text-sm text-gray-500 mb-1 */
-  @apply text-sm mb-1;
-  color: var(--color-text-medium);
-}
-
-.note-date-label {
-    /* font-bold text-gray-700 */
-    color: var(--color-text-dark);
-    @apply font-bold;
-}
-
-.note-duration {
-  /* text-lg font-semibold text-green-700 mb-2 */
-  color: var(--color-primary-medium);
-  @apply text-lg font-semibold mb-2;
-}
-
-.note-experience {
-  /* text-gray-700 italic border-t pt-2 mt-2 */
-  color: var(--color-text-dark);
-  @apply italic border-t pt-2 mt-2;
-  border-top-color: #e5e7eb; /* Gris claro de Tailwind */
-}
-
-/* --- Estado Vacío (Empty State) --- */
-
+/* ─── EMPTY STATE ────────────────────────────────────────────────────────────── */
 .empty-state {
-    /* text-align: center; padding: 50px; background-color: #f9fff8; */
-    @apply text-center p-10 rounded-lg;
-    background-color: var(--color-background-light);
+  text-align: center;
+  padding: 3.5rem 2rem;
+  border: 1.5px dashed var(--color-border);
+  border-radius: 20px;
 }
 
-.empty-state-text {
-    /* color: #555; font-size: 1.1em; margin-bottom: 20px; */
-    color: var(--color-text-medium);
-    @apply text-lg mb-4;
+.empty-state p {
+  color: var(--color-text-muted);
+  font-size: 1rem;
+  margin: 0 0 1.5rem;
 }
 
-.call-to-action-link {
-    /* display: inline-block; padding: 10px 20px; background-color: #6aa84f; color: white; border-radius: 5px; font-weight: bold; */
-    background-color: var(--color-primary-medium);
-    @apply text-white px-4 py-2 rounded-lg font-semibold transition duration-150;
+/* ─── LOADING / ERROR ────────────────────────────────────────────────────────── */
+.history-loading {
+  text-align: center;
+  padding: 4rem 0;
+  color: var(--color-text-muted);
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
 }
 
-.call-to-action-link:hover {
-    /* background-color: #38761d; */
-    background-color: var(--color-primary-dark);
+.history-error {
+  max-width: 400px;
+  margin: 3rem auto;
+  padding: 1.5rem;
+  background: rgba(192, 97, 106, 0.08);
+  border: 1px solid rgba(192, 97, 106, 0.3);
+  border-radius: 16px;
+  text-align: center;
+  color: var(--color-error);
 }

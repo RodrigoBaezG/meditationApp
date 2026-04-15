@@ -1,35 +1,69 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import './Home.css'; // Mantenemos la importación
+import { useAuth } from '../context/AuthContext';
+import './Home.css';
 
 const Home = () => {
-    return (
-        // Aplicamos la clase semántica 'home-container'
-        <div className="home-container">
+  const { isAuthenticated } = useAuth();
 
-            {/* Aplicamos la clase semántica 'hero-section' */}
-            <div className="hero-section">
-                <h1 className="main-title">Letting be Meditation</h1>
-                <p className="tagline">Find peace within you.</p>
-                <img
-                    src="/Home.jpg" // <-- Reemplaza esto con la ruta real de tu imagen
-                    alt="Small decorative leaf"
-                    // max-h-5 establece la altura máxima a 1.25rem (20px)
-                    // mx-auto centra la imagen si es un elemento de bloque
-                    // w-auto asegura que el ancho se ajuste automáticamente
-                    className="max-h-100 mx-auto w-auto -rotate-2"
-                />
-
-                {/* Aplicamos la clase semántica 'info-section' */}
-                <div className="info-section">
-                    <h2 className='text-2xl font-bold'>Why do we meditate?</h2>
-                    <p>We want peace. We recognize that we are not in peace and that we do not know how to reach it. To meditate is to strengthen our willingness to surrender to the moment as it is.</p>
-                    <h2 className='text-2xl font-bold'>What is meditation for?</h2>
-                    <p>Since we do not know how to be in peace, we are willing to be taught. We seek reality. We step aside.</p>
-                </div>
-            </div>
+  return (
+    <div>
+      {/* ─── HERO ─────────────────────────────────────────────────────────── */}
+      <section className="hero animate-in">
+        <div className="hero-content">
+          <span className="hero-eyebrow">Meditación consciente</span>
+          <h1 className="hero-title">
+            Encontrar paz<br />
+            <em>es posible</em>
+          </h1>
+          <p className="hero-subtitle">
+            Letting Be es una práctica simple para observar tu mente
+            sin juzgar lo que encuentras. Momento a momento.
+          </p>
+          <div className="hero-actions">
+            {isAuthenticated ? (
+              <Link to="/new-meditation" className="btn-primary">
+                Nueva meditación
+              </Link>
+            ) : (
+              <Link to="/signup" className="btn-primary">
+                Comenzar gratis
+              </Link>
+            )}
+            <Link to="/instructions" className="btn-ghost">
+              Cómo funciona
+            </Link>
+          </div>
         </div>
-    );
+
+        <div className="hero-visual" aria-hidden="true">
+          <div className="breathing-ring">
+            <div className="breathing-core" />
+          </div>
+        </div>
+      </section>
+
+      {/* ─── INFO ─────────────────────────────────────────────────────────── */}
+      <section className="home-info animate-in-2">
+        <div className="home-info-card">
+          <h2>¿Para qué meditamos?</h2>
+          <p>
+            Queremos paz. Reconocemos que no estamos en paz y que no sabemos
+            cómo alcanzarla. Meditar es fortalecer nuestra disposición a
+            entregarnos al momento tal como es.
+          </p>
+        </div>
+        <div className="home-info-card">
+          <h2>¿Qué busca esta práctica?</h2>
+          <p>
+            Como no sabemos cómo estar en paz, estamos dispuestos a ser
+            enseñados. Buscamos la realidad. Nos apartamos. Dejamos ser
+            lo que ya es.
+          </p>
+        </div>
+      </section>
+    </div>
+  );
 };
 
 export default Home;

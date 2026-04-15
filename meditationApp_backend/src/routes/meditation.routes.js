@@ -1,42 +1,50 @@
-// src/routes/meditation.routes.js
 import express from 'express';
 import MeditationModel from '../models/meditation.model.js';
-import checkAuth from '../middleware/auth.middleware.js'; // ✨ Importamos el middleware
+import checkAuth from '../middleware/auth.middleware.js';
 
 const router = express.Router();
 
-// 1. POST /api/meditations - Registrar nueva meditación (PROTEGIDA)
-// El middleware checkAuth se ejecuta antes que la función asíncrona.
+// POST /api/meditations — registrar nueva sesión (protegida)
 router.post('/', checkAuth, async (req, res) => {
-    // ✨ Obtenemos el ID de usuario del token JWT decodificado
-    const userId = req.userId;
-    const { duration, date, note } = req.body;
+  const userId = req.userId;
+  const { duration, date, note } = req.body;
 
-    if (!duration || !date) {
-        return res.status(400).send({ message: 'Duration and date are required.' });
-    }
+  if (!duration || !date) {
+    return res.status(400).json({ message: 'La duración y la fecha son requeridas.' });
+  }
 
-    try {
-        const newMeditation = await MeditationModel.create(userId, duration, date, note);
-        res.status(201).send(newMeditation);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'Error registering meditation.' });
-    }
+  const durationNum = Number(duration);
+  if (!Number.isInteger(durationNum) || durationNum < 1 || durationNum > 480) {
+    return res.status(400).json({ message: 'La duración debe ser un número entero entre 1 y 480 minutos.' });
+  }
+
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateRegex.test(date) || isNaN(new Date(date).getTime())) {
+    return res.status(400).json({ message: 'La fecha no tiene un formato válido (YYYY-MM-DD).' });
+  }
+
+  try {
+    const newMeditation = await MeditationModel.create(userId, durationNum, date, note || null);
+    res.status(201).json(newMeditation);
+  } catch (error) {
+    console.error('[meditations/POST]', error.message);
+    res.status(500).json({ message: 'Error al guardar la meditación.' });
+  }
 });
 
-// 2. GET /api/meditations - Obtener historial de meditación (PROTEGIDA)
+// GET /api/meditations — historial del usuario (protegida, paginada)
 router.get('/', checkAuth, async (req, res) => {
-    // ✨ Obtenemos el ID de usuario del token JWT decodificado
-    const userId = req.userId;
+  const userId = req.userId;
+  const limit = Math.min(Number(req.query.limit) || 50, 100);
+  const offset = Number(req.query.offset) || 0;
 
-    try {
-        const history = await MeditationModel.findByUserId(userId);
-        res.status(200).send(history);
-    } catch (error) {
-        console.error(error);
-        res.status(500).send({ message: 'Error fetching meditation history.' });
-    }
+  try {
+    const history = await MeditationModel.findByUserId(userId, limit, offset);
+    res.status(200).json(history);
+  } catch (error) {
+    console.error('[meditations/GET]', error.message);
+    res.status(500).json({ message: 'Error al obtener el historial.' });
+  }
 });
 
 export default router;

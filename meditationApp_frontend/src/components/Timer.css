@@ -1,78 +1,98 @@
-@import "tailwindcss";
-@reference "tailwindcss";
-
-/*
-  Archivo CSS unificado para el componente Timer.jsx.
-  Asegúrate de que tus variables CSS están definidas globalmente.
-*/
-
-/* Contenedor principal del Timer */
+/* ─── TIMER CONTAINER ────────────────────────────────────────────────────────── */
 .timer-container {
-  /* max-w-md mx-auto p-8 bg-white rounded-xl shadow-2xl text-center relative */
-  @apply max-w-md mx-auto p-8 text-center relative;
-  /* background-color: var(--color-background-card); */
-  @apply rounded-xl shadow-2xl;
+  max-width: 440px;
+  margin: 0 auto;
+  padding: 2.5rem 2rem;
+  text-align: center;
+  position: relative;
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 24px;
 }
 
-/* Título de estado (Listo, Meditando, Pausado) */
-.timer-title {
-  /* text-4xl font-bold text-green-700 mb-6 mt-4 */
-  color: var(--color-primary-dark);
-  @apply text-4xl font-bold mb-6 mt-4;
-}
-
-/* Display del tiempo (el círculo grande) */
-.time-display {
-  /* text-8xl font-mono text-green-900 mb-10 p-6 border-4 border-green-300 rounded-full inline-block bg-green-50 shadow-inner */
-  color: var(--color-primary-dark);
-  @apply text-8xl font-mono mb-10 p-6 border-4 rounded-full inline-block shadow-inner;
-
-  /* Usamos variables para el fondo y el borde del display */
-  background-color: var(--color-background-light);
-}
-
-/* --- Botones de Control (Iniciar, Pausar, Continuar) --- */
-
-.control-button-base {
-  color: var(--color-primary-dark);
-  /* px-8 py-3 text-white font-bold rounded-lg transition duration-150 shadow-md transform hover:scale-105 */
-  @apply px-8 py-3 font-bold rounded-lg transition duration-150 shadow-md transform hover:scale-105 cursor-pointer;
-}
-
-/* Botón Iniciar / Continuar (Verde Primario) */
-
-
-.control-button-start-continue:hover {
-
-  @apply hover:bg-(--color-primary-light);
-}
-
-/* Botón Pausar (Amarillo/Naranja de estado) */
-.control-button-pause {
-  background-color: var(--color-state-pause);
-}
-
-.control-button-pause:hover {
-  /* Usamos un hover ligeramente más oscuro */
-  @apply hover:bg-yellow-500;
-}
-
-/* Botón Detener (Stop/Cancel) */
-.stop-button {
-  /* mt-8 ml-4 px-6 py-2 text-sm text-red-600 border border-red-600 rounded-full hover:bg-red-50 transition duration-150 */
-  color: var(--color-state-alert);
-  border-color: var(--color-state-alert);
-  @apply ml-4 px-6 py-2 text-sm border rounded-full transition duration-150 cursor-pointer;
-}
-
-.stop-button:hover {
-  /* Usamos un fondo suave al pasar el ratón */
-  @apply hover:bg-red-400 text-white;
-}
-
-/* Botón Atrás (Esquina Superior) */
+/* ─── BOTÓN ATRÁS ─────────────────────────────────────────────────────────────── */
 .back-button-corner {
-  /* absolute top-4 left-4 text-gray-500 hover:text-gray-800 transition duration-150 text-sm font-semibold */
-  color: var(--color-text-medium);
-  @apply absolute top-4 left-4 transition duration-150 text-sm font-semibold hover:text-(--color-text-dark) cursor-pointer;
+  position: absolute;
+  top: 1.25rem;
+  left: 1.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem 0;
+  transition: color 0.2s ease;
+}
+
+.back-button-corner:hover { color: var(--color-text); }
+
+/* ─── TÍTULO ─────────────────────────────────────────────────────────────────── */
+.timer-title {
+  font-family: var(--font-serif);
+  font-size: 1.375rem;
+  color: var(--color-text-muted);
+  margin: 0 0 1.75rem;
+  font-weight: 400;
+}
+
+/* ─── SVG RING ───────────────────────────────────────────────────────────────── */
+.timer-ring-wrapper {
+  position: relative;
+  width: 240px;
+  height: 240px;
+  margin: 0 auto 1.75rem;
+}
+
+.timer-ring {
+  width: 100%;
+  height: 100%;
+  transform: rotate(-90deg);
+}
+
+.timer-ring-bg {
+  fill: none;
+  stroke: var(--color-primary-light);
+  stroke-width: 7;
+}
+
+.timer-ring-progress {
+  fill: none;
+  stroke: var(--color-primary);
+  stroke-width: 7;
+  stroke-linecap: round;
+  transition: stroke-dashoffset 1s linear;
+}
+
+.timer-display {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.25rem;
+}
+
+.timer-time {
+  font-family: var(--font-serif);
+  font-size: 3.25rem;
+  color: var(--color-text);
+  line-height: 1;
+}
+
+.timer-label {
+  font-size: 0.6875rem;
+  font-weight: 500;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+}
+
+/* ─── CONTROLES ──────────────────────────────────────────────────────────────── */
+.timer-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
 }

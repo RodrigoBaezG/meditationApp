@@ -1,25 +1,151 @@
 @import "tailwindcss";
 @reference "tailwindcss";
 
-.home-container {
-    @apply space-y-10;
+/* ─── HERO ───────────────────────────────────────────────────────────────────── */
+.hero {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  align-items: center;
+  gap: 4rem;
+  min-height: calc(100vh - 64px - 5rem);
+  padding: 2rem 0;
 }
 
-.hero-section {
-    /* Aquí podemos usar la variable para un color de fondo plano si no usamos utilidades */    
-    /* Para el resto de las utilidades, seguimos usando @apply */
-    @apply text-center p-8 rounded-xl shadow-lg bg-white;
+.hero-content { max-width: 520px; }
+
+.hero-eyebrow {
+  display: inline-block;
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--color-primary);
+  margin-bottom: 1.25rem;
 }
 
-.main-title {
-    /* ✨ Aquí usamos la variable en una propiedad CSS directa */
-    @apply text-5xl font-extrabold mb-2 text-(--color-primary-dark);
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.4rem, 4.5vw, 3.75rem);
+  line-height: 1.08;
+  color: var(--color-text);
+  margin: 0 0 1.25rem;
 }
 
-.tagline {
-    @apply text-xl italic text-(--color-primary-dark);
+.hero-title em {
+  color: var(--color-primary);
+  font-style: italic;
 }
 
-.info-section {
-    @apply flex flex-col items-center p-6 bg-white rounded-lg text-center;
+.hero-subtitle {
+  font-size: 1.0625rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin: 0 0 2.25rem;
+  max-width: 400px;
+}
+
+.hero-actions {
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+/* ─── BREATHING VISUAL ───────────────────────────────────────────────────────── */
+.hero-visual {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.breathing-ring {
+  position: relative;
+  width: 340px;
+  height: 340px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.breathing-ring::before,
+.breathing-ring::after {
+  content: '';
+  position: absolute;
+  border-radius: 50%;
+  background: var(--color-primary-light);
+  animation: breathe 6s ease-in-out infinite;
+}
+
+.breathing-ring::before {
+  width: 100%;
+  height: 100%;
+  opacity: 0.25;
+}
+
+.breathing-ring::after {
+  width: 70%;
+  height: 70%;
+  opacity: 0.4;
+  animation-delay: 0.5s;
+}
+
+.breathing-core {
+  position: relative;
+  z-index: 1;
+  width: 45%;
+  height: 45%;
+  border-radius: 50%;
+  background: var(--color-primary);
+  opacity: 0.7;
+  animation: breathe 6s ease-in-out infinite;
+  animation-delay: 1s;
+}
+
+/* ─── INFO SECTION ───────────────────────────────────────────────────────────── */
+.home-info {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1.5rem;
+  margin-top: 4rem;
+  padding-top: 4rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.home-info-card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.75rem;
+}
+
+.home-info-card h2 {
+  font-family: var(--font-serif);
+  font-size: 1.25rem;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
+}
+
+.home-info-card p {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  line-height: 1.7;
+  margin: 0;
+}
+
+/* ─── RESPONSIVE ─────────────────────────────────────────────────────────────── */
+@media (max-width: 768px) {
+  .hero {
+    grid-template-columns: 1fr;
+    gap: 2.5rem;
+    text-align: center;
+  }
+
+  .hero-content { max-width: 100%; }
+
+  .hero-subtitle { max-width: 100%; }
+
+  .hero-actions { justify-content: center; }
+
+  .hero-visual { display: none; }
+
+  .home-info { grid-template-columns: 1fr; }
 }

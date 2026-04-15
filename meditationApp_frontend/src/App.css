@@ -1,38 +1,79 @@
 @import url('./styles.css');
-
 @import "tailwindcss";
 @reference "tailwindcss";
 
-
-/* Estilos de la cabecera */
-
-
+/* ─── NAVBAR ─────────────────────────────────────────────────────────────────── */
 .main-header {
-  /* ✨ Añadimos 'sticky', 'top-0' y 'z-10' para fijar la barra. */
-  @apply bg-(--color-primary-dark) shadow-lg w-full sticky top-0 z-10 flex; 
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  width: 100%;
+  background: rgba(247, 245, 242, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid var(--color-border);
+  transition: background 0.3s ease;
 }
 
-.navbar-nav {
-  /* max-w-5xl, centrado (mx-auto), y padding responsive */
-  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 justify-center;
+@media (prefers-color-scheme: dark) {
+  .main-header {
+    background: rgba(26, 31, 29, 0.88);
+  }
 }
 
-.nav-list {
-  @apply flex space-x-6 py-4;
+.navbar-inner {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.navbar-brand {
+  font-family: var(--font-serif);
+  font-size: 1.3rem;
+  color: var(--color-primary-dark);
+  text-decoration: none;
+  letter-spacing: 0.01em;
+  transition: opacity 0.2s;
+}
+
+.navbar-brand:hover { opacity: 0.75; }
+
+.navbar-links {
+  display: flex;
+  align-items: center;
+  gap: 1.75rem;
 }
 
 .nav-link {
-  /* Color blanco, hover a verde claro, negrita, transición */
-  @apply text-white hover:text-(--color-primary-light) font-bold transition duration-150;
+  font-size: 0.9rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  transition: color 0.2s ease;
 }
 
-/* Estilos para el contenedor principal de la App */
-.app-container {
-  @apply min-h-screen bg-gray-50;
+.nav-link:hover { color: var(--color-primary); }
+
+.nav-logout {
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
 }
 
-/* Estilos para el contenido principal (main) */
-main {
-  /* max-w-5xl, centrado, y padding responsive */
-  @apply max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-8;
+.nav-logout:hover { color: var(--color-error); }
+
+/* ─── MAIN LAYOUT ────────────────────────────────────────────────────────────── */
+.app-main {
+  max-width: 72rem;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem;
 }

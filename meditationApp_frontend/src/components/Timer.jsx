@@ -1,153 +1,130 @@
-import React, { useState, useEffect, useCallback } from 'react';
-import './Timer.css'; // ✨ Importamos el nuevo CSS
+import React, { useState, useEffect, useRef, useCallback } from 'react';
+import { formatTime } from '../utils/formatters';
+import './Timer.css';
 
-const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
+const RADIUS = 104;
+const CIRCUMFERENCE = 2 * Math.PI * RADIUS;
 
-  const paddedMinutes = String(minutes).padStart(2, '0');
-  const paddedSeconds = String(remainingSeconds).padStart(2, '0');
-
-  return `${paddedMinutes}:${paddedSeconds}`;
-};
-
-const Timer = ({ initialTime, onFinish, onCancel, onBack }) => {
+const Timer = ({ initialTime, onFinish, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
 
-  const handleFinishCallback = useCallback(() => {
-    new Audio('https://s3.amazonaws.com/iamnapo/audios/gong.mp3').play();
+  // Refs para cálculo robusto con Date.now() (resiste tabs en background)
+  const startTimeRef    = useRef(null);
+  const pauseTimeRef    = useRef(null);
+  const totalPausedRef  = useRef(0);
+  const intervalRef     = useRef(null);
+
+  const progress   = 1 - timeLeft / initialTime;
+  const dashOffset = CIRCUMFERENCE * (1 - progress);
+
+  const handleFinish = useCallback(() => {
+    clearInterval(intervalRef.current);
+    new Audio('https://s3.amazonaws.com/iamnapo/audios/gong.mp3').play().catch(() => {});
     onFinish();
   }, [onFinish]);
 
+  // Tick usando Date.now() para evitar deriva en pestañas inactivas
   useEffect(() => {
-    if (isRunning && timeLeft === 0) {
-      handleFinishCallback();
-      return;
-    }
+    if (!isRunning || isPaused) return;
 
-    if (isRunning && !isPaused && timeLeft > 0) {
-      const timerId = setInterval(() => {
-        setTimeLeft(prevTime => prevTime - 1);
-      }, 1000);
+    intervalRef.current = setInterval(() => {
+      const elapsed  = (Date.now() - startTimeRef.current - totalPausedRef.current) / 1000;
+      const remaining = Math.max(0, initialTime - elapsed);
+      const rounded   = Math.round(remaining);
 
-      return () => clearInterval(timerId);
-    }
+      setTimeLeft(rounded);
 
-  }, [isRunning, isPaused, timeLeft, handleFinishCallback]);
+      if (rounded === 0) {
+        clearInterval(intervalRef.current);
+        handleFinish();
+      }
+    }, 500); // Tick cada 500ms para mayor precisión
 
-  // --- MANEJADORES DE ACCIONES ---
+    return () => clearInterval(intervalRef.current);
+  }, [isRunning, isPaused, initialTime, handleFinish]);
 
   const handleStart = () => {
-    if (!isRunning && timeLeft === initialTime) {
-      setIsRunning(true);
-      setIsPaused(false);
-    }
+    startTimeRef.current   = Date.now();
+    totalPausedRef.current = 0;
+    setIsRunning(true);
+    setIsPaused(false);
   };
 
   const handlePause = () => {
-    if (isRunning && !isPaused) {
-      setIsPaused(true);
-    }
+    pauseTimeRef.current = Date.now();
+    setIsPaused(true);
   };
 
   const handleContinue = () => {
-    if (isRunning && isPaused) {
-      setIsPaused(false);
-    }
+    totalPausedRef.current += Date.now() - pauseTimeRef.current;
+    setIsPaused(false);
   };
 
-  // ✨ NUEVO: Función para detener y resetear el contador
   const handleStop = () => {
-    setIsRunning(false); // Detiene el contador
-    setIsPaused(false);  // Desactiva la pausa
-    setTimeLeft(initialTime); // Vuelve al tiempo inicial
+    clearInterval(intervalRef.current);
+    setIsRunning(false);
+    setIsPaused(false);
+    setTimeLeft(initialTime);
+    startTimeRef.current   = null;
+    totalPausedRef.current = 0;
   };
 
-  // --- RENDERIZADO DE BOTONES DE CONTROL ---
-
-  const renderControlButton = () => {
-    // Si el tiempo terminó, mostramos el botón de "Guardar" (esto lo maneja NewMeditation.jsx)
-    if (timeLeft === 0) {
-      return null;
-    }
-
-    // 1. Botón Start (se muestra si no está corriendo y el tiempo está al inicio)
-    // ✨ MODIFICADO: Añadimos la condición de que el tiempo esté al inicio
-    if (!isRunning && timeLeft === initialTime) {
-      return (
-        <button
-          onClick={handleStart}
-          className="control-button-base control-button-start-continue"
-        >
-          ▶️ Start meditation
-        </button>
-      );
-    }
-
-    // 2. Botón Continue (se muestra si está pausado)
-    if (isPaused) {
-      return (
-        <button
-          onClick={handleContinue}
-          className="control-button-base control-button-start-continue"
-        >
-          ▶️ Continue
-        </button>
-      );
-    }
-
-    // 3. Botón Pause (se muestra si está corriendo y no pausado)
-    if (isRunning && !isPaused && timeLeft > 0) {
-      return (
-        <button
-          onClick={handlePause}
-          className="control-button-base control-button-pause"
-        >
-          ⏸️ Pause
-        </button>
-      );
-    }
-
-    return null;
-  };
+  const statusText = isRunning
+    ? (isPaused ? 'Pausa' : 'Meditando...')
+    : 'Listo para meditar';
 
   return (
-    // ✨ Clase semántica
-    <div className="timer-container">
+    <div className="timer-container animate-in">
+      {!isRunning && (
+        <button className="back-button-corner" onClick={onBack}>
+          ← Elegir tiempo
+        </button>
+      )}
 
-      {/* Botón Volver (solo se muestra cuando no estamos corriendo ni pausados) */}
-      <button
-        onClick={onBack}
-        // ✨ MODIFICADO: Solo permitimos volver a la selección de tiempo si el timer no está activo
-        className={`back-button-corner ${!isRunning ? '' : 'hidden'}`}
-      >
-        ← Choose time
-      </button>
+      <h1 className="timer-title">{statusText}</h1>
 
-      {/* ✨ Clase semántica */}
-      <h1 className="timer-title">
-        {isRunning ? (isPaused ? 'Meditation Paused' : 'Meditating...') : 'Ready to Meditate'}
-      </h1>
-
-      {/* ✨ Clase semántica */}
-      <div className="time-display">
-        {formatTime(timeLeft)}
+      {/* SVG Progress Ring */}
+      <div className="timer-ring-wrapper" role="timer" aria-label={`Tiempo restante: ${formatTime(timeLeft)}`}>
+        <svg className="timer-ring" viewBox="0 0 240 240">
+          <circle className="timer-ring-bg"       cx="120" cy="120" r={RADIUS} />
+          <circle
+            className="timer-ring-progress"
+            cx="120" cy="120" r={RADIUS}
+            strokeDasharray={CIRCUMFERENCE}
+            strokeDashoffset={dashOffset}
+          />
+        </svg>
+        <div className="timer-display">
+          <span className="timer-time">{formatTime(timeLeft)}</span>
+          <span className="timer-label">restante</span>
+        </div>
       </div>
 
-      <div className="flex justify-center items-center">
-        {renderControlButton()}
+      {/* Controles */}
+      <div className="timer-controls">
+        {!isRunning && timeLeft === initialTime && (
+          <button className="btn-primary" onClick={handleStart}>
+            Iniciar meditación
+          </button>
+        )}
 
-        {/* ✨ NUEVO: Botón de Detener (Stop) */}
-        {/* Se muestra si está corriendo o pausado Y no ha terminado el tiempo */}
+        {isRunning && isPaused && (
+          <button className="btn-primary" onClick={handleContinue}>
+            Continuar
+          </button>
+        )}
+
+        {isRunning && !isPaused && timeLeft > 0 && (
+          <button className="btn-ghost" onClick={handlePause}>
+            Pausar
+          </button>
+        )}
+
         {(isRunning || isPaused) && timeLeft > 0 && (
-          <button
-            onClick={handleStop}
-            // ✨ Clase semántica (asumimos que tienes una clase 'stop-button' o la estilizamos con Tailwind)
-            className="control-button-base stop-button"
-          >
-            ⏹️ Stop
+          <button className="btn-danger" onClick={handleStop}>
+            Detener
           </button>
         )}
       </div>

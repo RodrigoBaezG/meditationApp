@@ -1,38 +1,207 @@
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&family=Noto+Serif&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=Inter:wght@300;400;500;600&display=swap');
 
-/*
-  Definimos las variables CSS utilizando el selector :root.
-  Esto hace que las variables sean accesibles globalmente.
-*/
+/* ─── VARIABLES DE TEMA ─────────────────────────────────────────────────────── */
 :root {
-  /* Paleta Verde (Primario) */
-  --color-primary-dark: #3c7965;
-  /* Verde Oscuro (para Header, fondo, texto principal) */
-  --color-primary-medium: #408d80;
-  /* Verde Medio (para botones principales, acentos) */
-  --color-primary-light: #b6dddf;
-  /* Verde Claro (para hover o fondo suave) */
+  /* Verdes — tono salvia, más tranquilo */
+  --color-primary:        #5a8f7b;
+  --color-primary-dark:   #3d6b5a;
+  --color-primary-light:  #c8e6e0;
 
-  /* Paleta Neutral (Fondo y Texto) */
-  --color-background-light: #f9fafb;
-  /* Gris Claro/Blanco Suave (Fondo principal) */
-  --color-background-card: #ffffff;
-  /* Blanco Puro (para tarjetas y contenedores) */
-  --color-text-dark: #1f2937;
-  /* Gris Oscuro (Texto principal) */
-  --color-text-medium: #6b7280;
-  /* Gris Medio (Texto secundario, placeholders) */
+  /* Fondos — warm off-white */
+  --color-bg:             #f7f5f2;
+  --color-bg-card:        #ffffff;
+  --color-bg-subtle:      #eef0ec;
+  --color-surface:        #fafaf8;
 
-  /* Paleta de Estado (Funcional) */
-  --color-state-alert: #bd4646;
-  /* Rojo (Botones de Detener/Alerta) */
-  --color-state-pause: #ddaa51;
-  /* Amarillo/Naranja (Botón de Pausar) */
+  /* Texto */
+  --color-text:           #2d3a35;
+  --color-text-muted:     #7a8c85;
+
+  /* Bordes y divisores */
+  --color-border:         #d4ddd9;
+
+  /* Estado */
+  --color-error:          #c0616a;
+  --color-warning:        #d4a04a;
+  --color-success:        #5a8f7b;
+
+  /* Tipografía */
+  --font-sans:   'Inter', system-ui, sans-serif;
+  --font-serif:  'DM Serif Display', Georgia, serif;
 }
 
-/* Opcional: Establecer estilos base usando las variables */
+/* ─── DARK MODE ──────────────────────────────────────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --color-bg:         #1a1f1d;
+    --color-bg-card:    #232b27;
+    --color-bg-subtle:  #1e2620;
+    --color-surface:    #263029;
+    --color-text:       #e8f0ec;
+    --color-text-muted: #8fa898;
+    --color-border:     #3a4f45;
+    --color-primary:    #6ba893;
+    --color-primary-light: #2a4d42;
+  }
+}
+
+/* ─── BASE ───────────────────────────────────────────────────────────────────── */
+*, *::before, *::after {
+  box-sizing: border-box;
+}
+
 body {
-  background-color: var(--color-background-light);
-  color: var(--color-text-dark);
-  font-family: 'roboto', sans-serif;
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 1rem;
+  font-weight: 400;
+  line-height: 1.6;
+  color: var(--color-text);
+  background-color: var(--color-bg);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }
+
+h1, h2, h3 {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--color-text);
+}
+
+/* ─── SISTEMA DE BOTONES ─────────────────────────────────────────────────────── */
+.btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  background: var(--color-primary);
+  color: #fff;
+  border: none;
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background 0.2s ease, transform 0.15s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  background: var(--color-primary-dark);
+  transform: translateY(-1px);
+  box-shadow: 0 4px 18px rgba(61, 107, 90, 0.25);
+}
+
+.btn-primary:active { transform: translateY(0); }
+
+.btn-primary:disabled {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.btn-ghost {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem 1.75rem;
+  background: transparent;
+  color: var(--color-text-muted);
+  border: 1.5px solid var(--color-border);
+  border-radius: 9999px;
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: border-color 0.2s ease, color 0.2s ease;
+}
+
+.btn-ghost:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.btn-danger {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.5rem 1.25rem;
+  background: transparent;
+  color: var(--color-error);
+  border: 1.5px solid var(--color-error);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s ease, color 0.2s ease;
+}
+
+.btn-danger:hover {
+  background: var(--color-error);
+  color: #fff;
+}
+
+/* ─── INPUTS ─────────────────────────────────────────────────────────────────── */
+.form-input {
+  width: 100%;
+  padding: 0.75rem 1rem;
+  border: 1.5px solid var(--color-border);
+  border-radius: 10px;
+  background: var(--color-surface);
+  color: var(--color-text);
+  font-family: var(--font-sans);
+  font-size: 0.9375rem;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  outline: none;
+}
+
+.form-input:focus {
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 3px rgba(90, 143, 123, 0.15);
+}
+
+.form-input::placeholder { color: var(--color-text-muted); opacity: 0.8; }
+
+.form-input:read-only {
+  background: var(--color-bg-subtle);
+  cursor: not-allowed;
+  color: var(--color-text-muted);
+}
+
+.form-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+  margin-bottom: 0.375rem;
+  letter-spacing: 0.02em;
+}
+
+/* ─── CARD BASE ──────────────────────────────────────────────────────────────── */
+.card {
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+/* ─── ANIMACIONES ────────────────────────────────────────────────────────────── */
+@keyframes fadeInUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes breathe {
+  0%, 100% { transform: scale(1);    opacity: 0.55; }
+  50%       { transform: scale(1.12); opacity: 0.9; }
+}
+
+.animate-in   { animation: fadeInUp 0.45s ease both; }
+.animate-in-1 { animation: fadeInUp 0.45s 0.1s ease both; }
+.animate-in-2 { animation: fadeInUp 0.45s 0.2s ease both; }
+.animate-in-3 { animation: fadeInUp 0.45s 0.3s ease both; }

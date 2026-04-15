@@ -1,60 +1,87 @@
-@import "tailwindcss";
-@reference "tailwindcss";
-
+/* ─── CONTENEDOR ─────────────────────────────────────────────────────────────── */
 .instructions-container {
-  /* max-width: 800px; margin: 40px auto; padding: 30px; */
-  @apply max-w-4xl mx-auto p-8 lg:p-10 mt-10;
-  
-  /* background-color: #f7f3f0; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); */
-  @apply bg-(--color-background-light) rounded-xl shadow-2xl;
-  
-  /* font-family: 'Arial', sans-serif; */
-  @apply font-sans;
+  max-width: 680px;
+  margin: 0 auto;
 }
 
-/* Título principal */
 .instructions-container h1 {
-  /* text-align: center; color: #38761d; margin-bottom: 25px; font-size: 2.2em; */
-  color: var(--color-primary-dark); /* Usamos la variable para el color */
-  @apply text-center mb-6 text-4xl font-extrabold;
+  font-family: var(--font-serif);
+  font-size: 2rem;
+  color: var(--color-text);
+  margin: 0 0 0.75rem;
+  font-weight: 400;
 }
 
-/* Texto de introducción y cierre */
-.intro-text, .closing-text {
-  /* text-align: center; font-style: italic; margin-bottom: 30px; color: #555; */
-  @apply text-center italic mb-8 text-lg text-(--color-text-medium);
+.intro-text {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin: 0 0 2.5rem;
+  line-height: 1.7;
 }
 
-/* Tarjeta de cada paso */
+/* ─── CARDS DE PASOS ─────────────────────────────────────────────────────────── */
 .step-card {
-  /* background-color: #ffffff; padding: 20px; border-left: 5px solid #6aa84f; */
-  @apply bg-(--color-background-card) p-6 border-l-4 rounded-lg shadow-md;
-  
-  /* border-radius: 8px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05); margin-bottom: 20px; */
-  @apply mb-5;
-
-  /* Aplicamos el color de la barra lateral usando la variable */
-  border-left-color: var(--color-primary-medium);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: 16px;
+  padding: 1.75rem 2rem;
+  margin-bottom: 1.25rem;
 }
 
-/* Título de cada paso */
 .step-card h2 {
-  /* color: #6aa84f; margin-top: 0; border-bottom: 1px dashed #e0e0e0; padding-bottom: 5px; font-size: 1.5em; */
-  color: var(--color-primary-medium);
-  @apply mt-0 pb-2 text-2xl font-semibold;
-  
-  /* Estilo para la línea divisoria */
-  border-bottom: 1px dashed #d1d5db; /* Usamos un gris Tailwind equivalente */
+  font-family: var(--font-serif);
+  font-size: 1.35rem;
+  color: var(--color-primary-dark);
+  margin: 0 0 1rem;
+  font-weight: 400;
 }
 
-/* Lista de ítems */
 .step-card ul {
-  /* list-style: disc; padding-left: 20px; line-height: 1.6; */
-  @apply list-disc pl-6 leading-relaxed;
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
 }
 
-/* Ítem de la lista */
 .step-card li {
-  /* margin-bottom: 8px; color: #333; */
-  @apply mb-2 text-(--color-text-dark);
+  font-size: 0.9375rem;
+  color: var(--color-text);
+  line-height: 1.65;
+  padding-left: 1.25rem;
+  position: relative;
+}
+
+.step-card li::before {
+  content: '·';
+  position: absolute;
+  left: 0;
+  color: var(--color-primary);
+  font-size: 1.25rem;
+  line-height: 1.4;
+}
+
+/* ─── CIERRE ─────────────────────────────────────────────────────────────────── */
+.closing-text {
+  font-size: 0.9375rem;
+  color: var(--color-text-muted);
+  font-style: italic;
+  text-align: center;
+  margin: 2rem 0;
+  line-height: 1.7;
+}
+
+/* ─── CTA FINAL ──────────────────────────────────────────────────────────────── */
+.instructions-cta {
+  text-align: center;
+  padding: 2.5rem 1rem;
+  border-top: 1px solid var(--color-border);
+  margin-top: 1rem;
+}
+
+.instructions-cta p {
+  font-size: 1rem;
+  color: var(--color-text-muted);
+  margin: 0 0 1.25rem;
 }

@@ -1,30 +1,31 @@
 /**
  * Convierte segundos a formato MM:SS.
- * @param {number} seconds - Segundos a formatear.
- * @returns {string} Tiempo en formato MM:SS.
  */
 export const formatTime = (seconds) => {
-  const minutes = Math.floor(seconds / 60);
-  const remainingSeconds = seconds % 60;
-  // Asegura que minutos y segundos siempre tengan dos dígitos (ej. 05:03)
-  return `${minutes.toString().padStart(2, '0')}:${remainingSeconds.toString().padStart(2, '0')}`;
+  const m = Math.floor(seconds / 60);
+  const s = seconds % 60;
+  return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}`;
 };
 
 /**
- * Formatea una cadena de fecha ISO para el historial.
- * @param {string} isoString - Cadena de fecha ISO.
- * @returns {string} Fecha y hora formateadas.
+ * Formatea una fecha ISO/YYYY-MM-DD a texto legible en español.
  */
-export const formatDate = (isoString) => {
-    const date = new Date(isoString);
-    const options = { 
-        year: 'numeric', 
-        month: 'short', 
-        day: 'numeric', 
-        hour: '2-digit', 
-        minute: '2-digit',
-        hour12: false // Formato 24h
-    };
-    // El 'es-ES' asegura que el formato sea en español
-    return date.toLocaleDateString('es-ES', options);
+export const formatDate = (dateString) => {
+  return new Date(dateString).toLocaleDateString('es-ES', {
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+    timeZone: 'UTC',
+  });
+};
+
+/**
+ * Convierte minutos totales a "Xh Ymin" (ej. 1h 30min).
+ */
+export const formatTotalTime = (totalMinutes) => {
+  if (!totalMinutes || totalMinutes === 0) return '0 min';
+  if (totalMinutes < 60) return `${totalMinutes} min`;
+  const hours = Math.floor(totalMinutes / 60);
+  const remaining = totalMinutes % 60;
+  return remaining > 0 ? `${hours}h ${remaining}min` : `${hours}h`;
 };
