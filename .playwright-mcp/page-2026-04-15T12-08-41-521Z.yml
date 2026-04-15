@@ -1,0 +1,33 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Letting Be" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "Instrucciones" [ref=e8] [cursor=pointer]:
+          - /url: /instructions
+        - link "Entrar" [ref=e9] [cursor=pointer]:
+          - /url: /login
+        - link "Registrarse" [ref=e10] [cursor=pointer]:
+          - /url: /signup
+  - main [ref=e11]:
+    - generic [ref=e13]:
+      - heading "Crear cuenta" [level=1] [ref=e14]
+      - paragraph [ref=e15]: Empieza tu práctica hoy, es gratis.
+      - generic [ref=e16]:
+        - alert [ref=e26]: Error during registration.
+        - generic [ref=e17]:
+          - generic [ref=e18]: Email
+          - textbox "Email" [ref=e19]:
+            - /placeholder: tu@email.com
+            - text: prueba_local@test.com
+        - generic [ref=e20]:
+          - generic [ref=e21]: Contraseña
+          - textbox "Contraseña" [ref=e22]:
+            - /placeholder: Mínimo 6 caracteres
+            - text: prueba123
+        - button "Registrarse" [ref=e23] [cursor=pointer]
+      - paragraph [ref=e24]:
+        - text: ¿Ya tienes cuenta?
+        - link "Iniciar sesión" [ref=e25] [cursor=pointer]:
+          - /url: /login

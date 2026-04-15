@@ -1,0 +1,46 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - generic [ref=e5]:
+      - link "Letting Be" [ref=e6] [cursor=pointer]:
+        - /url: /
+      - navigation [ref=e7]:
+        - link "Instrucciones" [ref=e8] [cursor=pointer]:
+          - /url: /instructions
+        - link "Entrar" [ref=e9] [cursor=pointer]:
+          - /url: /login
+        - link "Registrarse" [ref=e10] [cursor=pointer]:
+          - /url: /signup
+  - main [ref=e11]:
+    - generic [ref=e12]:
+      - heading "Cómo practicamos el Letting Be" [level=1] [ref=e13]
+      - paragraph [ref=e14]: Tómate unos minutos para leer estas instrucciones con calma antes de comenzar tu práctica.
+      - generic [ref=e15]:
+        - heading "Conceptos previos" [level=2] [ref=e16]
+        - list [ref=e17]:
+          - listitem [ref=e18]: · Los pensamientos producen sensaciones físicas.
+          - listitem [ref=e19]: · Las emociones producen sensaciones físicas.
+          - listitem [ref=e20]: · La energía está detrás de los pensamientos y las emociones.
+          - listitem [ref=e21]: · Cuando dejamos de resistir las sensaciones causadas por pensamientos y emociones, la energía que hay detrás se disipa progresivamente.
+          - listitem [ref=e22]: · Sin esa energía, los pensamientos y emociones colapsan por sí solos.
+          - listitem [ref=e23]: "· Cuando colapsan, te acercas a tu estado natural: la Paz."
+          - listitem [ref=e24]: · Cuando todo desaparece, la Paz es lo único que queda.
+          - listitem [ref=e25]: · Si no sentimos paz, significa que estamos resistiendo algo.
+      - generic [ref=e26]:
+        - heading "La meditación Letting Be" [level=2] [ref=e27]
+        - list [ref=e28]:
+          - listitem [ref=e29]: · Sé consciente de que siempre estás teniendo una experiencia física.
+          - listitem [ref=e30]: · Presta atención a esa experiencia. Presta atención a las sensaciones físicas.
+          - listitem [ref=e31]: · Observa cómo puedes dejar de resistir esas sensaciones. Sigue haciéndolo. Sigue notándolas.
+          - listitem [ref=e32]: · Pase lo que pase, lleva tu atención continuamente a esas sensaciones físicas y deja de resistirlas.
+          - listitem [ref=e33]: · Si encuentras dolor, deja de resistir la sensación física.
+          - listitem [ref=e34]: · Si encuentras tristeza, deja de resistir la sensación física.
+          - listitem [ref=e35]: · Si te sientes incómodo, deja de resistir la sensación física.
+          - listitem [ref=e36]: · Si encuentras deseo, deja de resistir la sensación física.
+          - listitem [ref=e37]: · Si no encuentras nada, deja de resistir la sensación física.
+          - listitem [ref=e38]: · Lo que sea que encuentres en el momento presente es lo que necesitas dejar de resistir.
+          - listitem [ref=e39]: · Sigue haciendo esto durante el tiempo que hayas elegido para meditar. Cierra los ojos si lo necesitas.
+      - paragraph [ref=e40]: Dejar de resistir significa rendirse. Es un hábito que podemos construir momento a momento. Requiere práctica. Sé amable contigo mismo. Todos hacemos lo mejor que podemos.
+      - generic [ref=e41]:
+        - paragraph [ref=e42]: ¿Listo para comenzar?
+        - link "Crear cuenta y meditar" [ref=e43] [cursor=pointer]:
+          - /url: /signup
