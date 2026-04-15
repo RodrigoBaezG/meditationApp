@@ -1,0 +1,118 @@
+@import "tailwindcss";
+@reference "tailwindcss";
+
+.history-container {
+  /* max-w: 800px; margin: 40px auto; padding: 30px; */
+  @apply max-w-4xl mx-auto p-6 md:p-8 mt-10 space-y-6;
+  
+  /* background-color: #ffffff; border-radius: 12px; box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); font-family: 'Arial', sans-serif; */
+  background-color: var(--color-background-card);
+  @apply rounded-lg shadow-xl font-sans;
+}
+
+/* Título principal */
+.history-title {
+  /* text-align: center; color: #38761d; margin-bottom: 20px; font-size: 2.2em; */
+  color: var(--color-primary-dark);
+  @apply text-4xl font-bold text-center border-b pb-4 mb-4;
+}
+
+/* --- Sección de Resumen del Tiempo Total --- */
+
+.total-time-summary {
+  /* Estilos para el div de resumen */
+  @apply p-4 rounded-lg border text-center shadow-sm;
+  background-color: var(--color-background-light); /* Fondo suave */
+  border-color: var(--color-primary-light);
+}
+
+.summary-title {
+  /* text-xl font-semibold text-green-800 mb-2 */
+  color: var(--color-primary-dark);
+  @apply text-xl font-semibold mb-2;
+}
+
+.summary-value {
+  /* text-4xl font-extrabold text-green-700 */
+  color: var(--color-primary-medium);
+  @apply text-4xl font-extrabold;
+}
+
+/* --- Tarjetas de Notas Individuales --- */
+
+.notes-list-wrapper {
+  /* space-y-4 */
+  @apply space-y-4;
+}
+
+.note-card {
+  /* p-5 bg-white border-l-4 border-green-600 rounded-lg shadow-md flex justify-between items-start */
+  @apply p-5 rounded-lg shadow-md flex justify-between items-start transition duration-200;
+  
+  /* background-color: #f9fff8; border: 1px solid #e0e0e0; */
+  background-color: var(--color-background-card); 
+  
+  /* border-left: 5px solid #6aa84f; */
+  border-left: 4px solid var(--color-primary-medium);
+}
+
+.note-card:hover {
+  /* box-shadow: 0 4px 12px rgba(56, 118, 29, 0.15); transform: translateY(-2px); */
+  @apply transform -translate-y-0.5;
+  box-shadow: 0 4px 12px rgba(30, 58, 36, 0.15); /* Sombra basada en dark primary */
+}
+
+.note-info-group {
+  /* flex-grow */
+  @apply flex-grow;
+}
+
+.note-date {
+  /* text-sm text-gray-500 mb-1 */
+  @apply text-sm mb-1;
+  color: var(--color-text-medium);
+}
+
+.note-date-label {
+    /* font-bold text-gray-700 */
+    color: var(--color-text-dark);
+    @apply font-bold;
+}
+
+.note-duration {
+  /* text-lg font-semibold text-green-700 mb-2 */
+  color: var(--color-primary-medium);
+  @apply text-lg font-semibold mb-2;
+}
+
+.note-experience {
+  /* text-gray-700 italic border-t pt-2 mt-2 */
+  color: var(--color-text-dark);
+  @apply italic border-t pt-2 mt-2;
+  border-top-color: #e5e7eb; /* Gris claro de Tailwind */
+}
+
+/* --- Estado Vacío (Empty State) --- */
+
+.empty-state {
+    /* text-align: center; padding: 50px; background-color: #f9fff8; */
+    @apply text-center p-10 rounded-lg;
+    background-color: var(--color-background-light);
+}
+
+.empty-state-text {
+    /* color: #555; font-size: 1.1em; margin-bottom: 20px; */
+    color: var(--color-text-medium);
+    @apply text-lg mb-4;
+}
+
+.call-to-action-link {
+    /* display: inline-block; padding: 10px 20px; background-color: #6aa84f; color: white; border-radius: 5px; font-weight: bold; */
+    background-color: var(--color-primary-medium);
+    @apply text-white px-4 py-2 rounded-lg font-semibold transition duration-150;
+}
+
+.call-to-action-link:hover {
+    /* background-color: #38761d; */
+    background-color: var(--color-primary-dark);
+}

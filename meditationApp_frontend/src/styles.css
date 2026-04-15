@@ -1,0 +1,38 @@
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital@0;1&family=Noto+Serif&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+
+/*
+  Definimos las variables CSS utilizando el selector :root.
+  Esto hace que las variables sean accesibles globalmente.
+*/
+:root {
+  /* Paleta Verde (Primario) */
+  --color-primary-dark: #3c7965;
+  /* Verde Oscuro (para Header, fondo, texto principal) */
+  --color-primary-medium: #408d80;
+  /* Verde Medio (para botones principales, acentos) */
+  --color-primary-light: #b6dddf;
+  /* Verde Claro (para hover o fondo suave) */
+
+  /* Paleta Neutral (Fondo y Texto) */
+  --color-background-light: #f9fafb;
+  /* Gris Claro/Blanco Suave (Fondo principal) */
+  --color-background-card: #ffffff;
+  /* Blanco Puro (para tarjetas y contenedores) */
+  --color-text-dark: #1f2937;
+  /* Gris Oscuro (Texto principal) */
+  --color-text-medium: #6b7280;
+  /* Gris Medio (Texto secundario, placeholders) */
+
+  /* Paleta de Estado (Funcional) */
+  --color-state-alert: #bd4646;
+  /* Rojo (Botones de Detener/Alerta) */
+  --color-state-pause: #ddaa51;
+  /* Amarillo/Naranja (Botón de Pausar) */
+}
+
+/* Opcional: Establecer estilos base usando las variables */
+body {
+  background-color: var(--color-background-light);
+  color: var(--color-text-dark);
+  font-family: 'roboto', sans-serif;
+}

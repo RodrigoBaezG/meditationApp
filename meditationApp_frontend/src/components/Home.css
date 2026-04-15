@@ -1,0 +1,25 @@
+@import "tailwindcss";
+@reference "tailwindcss";
+
+.home-container {
+    @apply space-y-10;
+}
+
+.hero-section {
+    /* Aquí podemos usar la variable para un color de fondo plano si no usamos utilidades */    
+    /* Para el resto de las utilidades, seguimos usando @apply */
+    @apply text-center p-8 rounded-xl shadow-lg bg-white;
+}
+
+.main-title {
+    /* ✨ Aquí usamos la variable en una propiedad CSS directa */
+    @apply text-5xl font-extrabold mb-2 text-(--color-primary-dark);
+}
+
+.tagline {
+    @apply text-xl italic text-(--color-primary-dark);
+}
+
+.info-section {
+    @apply flex flex-col items-center p-6 bg-white rounded-lg text-center;
+}

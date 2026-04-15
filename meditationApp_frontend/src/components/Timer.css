@@ -1,0 +1,78 @@
+@import "tailwindcss";
+@reference "tailwindcss";
+
+/*
+  Archivo CSS unificado para el componente Timer.jsx.
+  Asegúrate de que tus variables CSS están definidas globalmente.
+*/
+
+/* Contenedor principal del Timer */
+.timer-container {
+  /* max-w-md mx-auto p-8 bg-white rounded-xl shadow-2xl text-center relative */
+  @apply max-w-md mx-auto p-8 text-center relative;
+  /* background-color: var(--color-background-card); */
+  @apply rounded-xl shadow-2xl;
+}
+
+/* Título de estado (Listo, Meditando, Pausado) */
+.timer-title {
+  /* text-4xl font-bold text-green-700 mb-6 mt-4 */
+  color: var(--color-primary-dark);
+  @apply text-4xl font-bold mb-6 mt-4;
+}
+
+/* Display del tiempo (el círculo grande) */
+.time-display {
+  /* text-8xl font-mono text-green-900 mb-10 p-6 border-4 border-green-300 rounded-full inline-block bg-green-50 shadow-inner */
+  color: var(--color-primary-dark);
+  @apply text-8xl font-mono mb-10 p-6 border-4 rounded-full inline-block shadow-inner;
+
+  /* Usamos variables para el fondo y el borde del display */
+  background-color: var(--color-background-light);
+}
+
+/* --- Botones de Control (Iniciar, Pausar, Continuar) --- */
+
+.control-button-base {
+  color: var(--color-primary-dark);
+  /* px-8 py-3 text-white font-bold rounded-lg transition duration-150 shadow-md transform hover:scale-105 */
+  @apply px-8 py-3 font-bold rounded-lg transition duration-150 shadow-md transform hover:scale-105 cursor-pointer;
+}
+
+/* Botón Iniciar / Continuar (Verde Primario) */
+
+
+.control-button-start-continue:hover {
+
+  @apply hover:bg-(--color-primary-light);
+}
+
+/* Botón Pausar (Amarillo/Naranja de estado) */
+.control-button-pause {
+  background-color: var(--color-state-pause);
+}
+
+.control-button-pause:hover {
+  /* Usamos un hover ligeramente más oscuro */
+  @apply hover:bg-yellow-500;
+}
+
+/* Botón Detener (Stop/Cancel) */
+.stop-button {
+  /* mt-8 ml-4 px-6 py-2 text-sm text-red-600 border border-red-600 rounded-full hover:bg-red-50 transition duration-150 */
+  color: var(--color-state-alert);
+  border-color: var(--color-state-alert);
+  @apply ml-4 px-6 py-2 text-sm border rounded-full transition duration-150 cursor-pointer;
+}
+
+.stop-button:hover {
+  /* Usamos un fondo suave al pasar el ratón */
+  @apply hover:bg-red-400 text-white;
+}
+
+/* Botón Atrás (Esquina Superior) */
+.back-button-corner {
+  /* absolute top-4 left-4 text-gray-500 hover:text-gray-800 transition duration-150 text-sm font-semibold */
+  color: var(--color-text-medium);
+  @apply absolute top-4 left-4 transition duration-150 text-sm font-semibold hover:text-(--color-text-dark) cursor-pointer;
+}

@@ -1,0 +1,93 @@
+@import "tailwindcss";
+@reference "tailwindcss";
+
+/*
+  Archivo CSS unificado para NewMeditation.jsx (Selección y Formulario).
+  Asegúrate de que tus variables CSS están definidas y que este archivo
+  se importa correctamente en NewMeditation.jsx.
+*/
+
+/* --- Vista de Selección de Tiempo (Por defecto) --- */
+
+.selection-container {
+  /* max-w-3xl mx-auto p-8 bg-white rounded-xl shadow-xl text-center */
+  @apply max-w-3xl mx-auto p-8 text-center bg-(--color-background-card) rounded-xl shadow-xl;
+}
+
+.selection-title {
+  /* text-3xl font-bold text-green-800 mb-6 */
+  @apply text-3xl font-bold mb-6 text-(--color-primary-dark);
+}
+
+.selection-button-grid {
+  /* flex flex-wrap justify-center gap-4 */
+  @apply flex flex-wrap justify-center gap-4;
+}
+
+.duration-button {
+  /* p-4 bg-green-500 text-white text-xl font-semibold rounded-lg shadow-md */
+  @apply p-4 text-white text-xl font-semibold rounded-lg shadow-md transition duration-200 transform min-w-[120px];
+}
+
+.duration-button:hover {
+  /* hover:bg-green-600 transition duration-200 transform hover:scale-105 */
+  @apply hover:scale-105;
+}
+
+/* --- Formulario de Registro (isFinished) --- */
+
+.meditation-form-container {
+  /* max-w-lg mx-auto p-8 bg-white rounded-xl shadow-2xl */
+  @apply max-w-lg mx-auto p-8 rounded-xl shadow-2xl;
+}
+
+.form-title {
+  /* text-3xl font-bold text-center text-green-800 mb-2 */
+  @apply text-3xl font-bold text-center mb-2;
+}
+
+.form-subtitle {
+  /* text-center text-lg text-gray-600 mb-8 */
+  @apply text-center text-lg mb-8;
+}
+
+.duration-info-input {
+  /* p-3 border border-gray-300 rounded-lg bg-green-50 text-green-700 font-bold cursor-not-allowed */
+  @apply p-3 border border-gray-300 rounded-lg font-bold cursor-not-allowed;
+}
+
+/* Estilos comunes para inputs y textarea (reutilizados del archivo anterior, pero corregidos) */
+.form-input-base {
+  /* w-full p-3 border border-gray-300 rounded-lg box-border text-base */
+  @apply w-full p-3 border border-gray-300 rounded-lg box-border text-base;
+  @apply transition duration-300;
+}
+
+.form-input-base:focus {
+  /* Foco usando variable */
+  border-color: var(--color-primary-medium);
+  @apply outline-none;
+}
+
+.submit-button {
+  /* w-full py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transition duration-150 shadow-md */
+  @apply w-full py-3 text-white font-bold rounded-lg shadow-md transition duration-150;
+}
+
+/* Clase para el enlace de volver a Inicio (si lo usas) */
+.back-to-home-link {
+  /* mt-8 px-6 py-2 text-sm text-gray-600 border border-gray-300 rounded-full hover:bg-gray-100 transition duration-150 */
+  @apply mt-8 px-6 py-2 text-sm border border-gray-300 rounded-full transition duration-150 hover:bg-gray-100 text-(--color-text-medium);
+}
+
+/* Clases específicas para el formulario de registro */
+.form-label {
+  /* font-semibold text-gray-700 mb-1 */
+  @apply font-semibold mb-1 text-(--color-text-dark);
+}
+
+/* Fix para el input de fecha */
+.date-input-disabled {
+  /* p-3 border border-gray-300 rounded-lg bg-gray-100 cursor-not-allowed */
+  @apply p-3 border border-gray-300 rounded-lg cursor-not-allowed bg-(--color-background-light);
+}
