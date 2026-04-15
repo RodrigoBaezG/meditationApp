@@ -1,0 +1,9 @@
+[build]
+  base    = "meditationApp_frontend"
+  command = "npm run build"
+  publish = "meditationApp_frontend/dist"
+
+[[redirects]]
+  from   = "/*"
+  to     = "/index.html"
+  status = 200
