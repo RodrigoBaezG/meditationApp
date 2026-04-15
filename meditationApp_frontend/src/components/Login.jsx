@@ -126,6 +126,17 @@ const Login = () => {
 
         <p style={{
           textAlign: 'center',
+          marginTop: '0.6rem',
+          fontSize: '0.78rem',
+          color: 'var(--color-text-muted)',
+          lineHeight: 1.5,
+        }}>
+          Cuenta compartida para explorar la app.<br />
+          No introduzcas datos personales.
+        </p>
+
+        <p style={{
+          textAlign: 'center',
           marginTop: '1.25rem',
           fontSize: '0.9rem',
           color: 'var(--color-text-muted)',
