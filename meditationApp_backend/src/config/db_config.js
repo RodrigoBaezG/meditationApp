@@ -1,30 +1,26 @@
-// src/config/db.config.js
 import pg from 'pg';
 import dotenv from 'dotenv';
 
 dotenv.config();
 
-// Configuración para usar la variable de entorno DATABASE_URL
-// Esto es estándar en entornos de nube como Render, Heroku, etc.
-const config = {
-    connectionString: process.env.DATABASE_URL,
-};
+const connectionString = process.env.DATABASE_URL;
 
-// Render requiere SSL para conexiones externas (como tu Node.js app)
-// Se añade la configuración SSL solo si estamos usando la URL de la DB
-if (process.env.DATABASE_URL) {
-    config.ssl = {
-        rejectUnauthorized: false // Es común deshabilitarlo en entornos de desarrollo/Render
-    };
-}
+// SSL solo para conexiones en la nube (Render, Neon, etc.)
+// Las conexiones locales/Docker no necesitan SSL
+const isCloudDB = connectionString &&
+  !connectionString.includes('localhost') &&
+  !connectionString.includes('127.0.0.1') &&
+  !connectionString.includes('@db:');   // hostname del servicio Docker
 
-const pool = new pg.Pool(config);
-
-pool.on('error', (err) => {
-    console.error('Unexpected error on idle client', err);
-    process.exit(-1);
+const pool = new pg.Pool({
+  connectionString,
+  ...(isCloudDB && { ssl: { rejectUnauthorized: false } }),
 });
 
-console.log('PostgreSQL pool initialized using DATABASE_URL.');
+pool.on('error', (err) => {
+  console.error('[DB] Error inesperado en cliente idle:', err.message);
+});
+
+console.log(`[DB] Pool inicializado — ${isCloudDB ? 'cloud (SSL)' : 'local'}`);
 
 export default pool;

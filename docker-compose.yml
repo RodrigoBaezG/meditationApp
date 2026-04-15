@@ -1,0 +1,50 @@
+services:
+
+  # ─── BASE DE DATOS ───────────────────────────────────────────────────────────
+  db:
+    image: postgres:16-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_DB:       meditation_db
+      POSTGRES_USER:     meditation_user
+      POSTGRES_PASSWORD: meditation_pass
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./meditationApp_backend/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U meditation_user -d meditation_db"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # ─── BACKEND ─────────────────────────────────────────────────────────────────
+  backend:
+    build: ./meditationApp_backend
+    restart: unless-stopped
+    environment:
+      DATABASE_URL: postgresql://meditation_user:meditation_pass@db:5432/meditation_db
+      JWT_SECRET:   local_dev_secret_cambia_esto_en_produccion
+      PORT:         3000
+    ports:
+      - "3000:3000"
+    depends_on:
+      db:
+        condition: service_healthy
+
+  # ─── FRONTEND ────────────────────────────────────────────────────────────────
+  frontend:
+    build:
+      context:    ./meditationApp_frontend
+      dockerfile: Dockerfile.dev
+    restart: unless-stopped
+    environment:
+      VITE_API_URL: http://localhost:3000/api
+    ports:
+      - "5173:5173"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
