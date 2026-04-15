@@ -9,5 +9,5 @@ COPY . .
 
 EXPOSE 5173
 
-# --host expone el servidor fuera del contenedor
-CMD ["npm", "run", "dev", "--", "--host"]
+# Escribe las vars VITE_* al .env para que Vite las exponga al browser
+CMD sh -c 'echo "VITE_API_URL=${VITE_API_URL:-http://localhost:3000/api}" > .env && npm run dev -- --host'

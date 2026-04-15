@@ -11,6 +11,11 @@ const Login = () => {
   const navigate = useNavigate();
   const { handleAuth } = useAuth();
 
+  const handleDemo = () => {
+    setEmail('demo@demo.com');
+    setPassword('demo1234');
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -97,9 +102,31 @@ const Login = () => {
           </button>
         </form>
 
+        <div style={{
+          margin: '1.5rem 0',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '0.75rem',
+          color: 'var(--color-text-muted)',
+          fontSize: '0.8rem',
+        }}>
+          <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--color-border)' }} />
+          o
+          <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--color-border)' }} />
+        </div>
+
+        <button
+          type="button"
+          className="btn-ghost"
+          onClick={handleDemo}
+          style={{ width: '100%' }}
+        >
+          Acceso demo
+        </button>
+
         <p style={{
           textAlign: 'center',
-          marginTop: '1.5rem',
+          marginTop: '1.25rem',
           fontSize: '0.9rem',
           color: 'var(--color-text-muted)',
         }}>
