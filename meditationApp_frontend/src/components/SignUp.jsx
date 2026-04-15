@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { apiRequest } from '../api/apiClient';
 
 const SignUp = () => {
@@ -10,6 +11,8 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { handleAuth } = useAuth();
+  const { t } = useLanguage();
+  const s = t.signup;
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -25,7 +28,7 @@ const SignUp = () => {
       handleAuth(data.token, data.user);
       navigate('/instructions');
     } catch (err) {
-      setError(err.message || 'Error al crear la cuenta.');
+      setError(err.message || s.errorDefault);
     } finally {
       setIsLoading(false);
     }
@@ -41,7 +44,7 @@ const SignUp = () => {
           marginBottom: '0.5rem',
           color: 'var(--color-text)',
         }}>
-          Crear cuenta
+          {s.title}
         </h1>
         <p style={{
           textAlign: 'center',
@@ -49,7 +52,7 @@ const SignUp = () => {
           fontSize: '0.9375rem',
           marginBottom: '1.75rem',
         }}>
-          Empieza tu práctica hoy, es gratis.
+          {s.subtitle}
         </p>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -68,28 +71,28 @@ const SignUp = () => {
           )}
 
           <div>
-            <label className="form-label" htmlFor="email">Email</label>
+            <label className="form-label" htmlFor="email">{s.emailLabel}</label>
             <input
               type="email"
               id="email"
               className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@email.com"
+              placeholder={s.emailPlaceholder}
               required
               autoComplete="email"
             />
           </div>
 
           <div>
-            <label className="form-label" htmlFor="password">Contraseña</label>
+            <label className="form-label" htmlFor="password">{s.passwordLabel}</label>
             <input
               type="password"
               id="password"
               className="form-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="Mínimo 6 caracteres"
+              placeholder={s.passwordPlaceholder}
               required
               minLength={6}
               autoComplete="new-password"
@@ -102,7 +105,7 @@ const SignUp = () => {
             disabled={isLoading}
             style={{ width: '100%', marginTop: '0.5rem' }}
           >
-            {isLoading ? 'Creando cuenta...' : 'Registrarse'}
+            {isLoading ? s.submitting : s.submit}
           </button>
         </form>
 
@@ -112,9 +115,9 @@ const SignUp = () => {
           fontSize: '0.9rem',
           color: 'var(--color-text-muted)',
         }}>
-          ¿Ya tienes cuenta?{' '}
+          {s.haveAccount}{' '}
           <Link to="/login" style={{ color: 'var(--color-primary)', fontWeight: 500, textDecoration: 'none' }}>
-            Iniciar sesión
+            {s.loginLink}
           </Link>
         </p>
       </div>

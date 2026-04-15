@@ -1,5 +1,6 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { formatTime } from '../utils/formatters';
+import { useLanguage } from '../context/LanguageContext';
 import './Timer.css';
 
 const RADIUS = 104;
@@ -9,6 +10,8 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
   const [timeLeft, setTimeLeft] = useState(initialTime);
   const [isRunning, setIsRunning] = useState(false);
   const [isPaused, setIsPaused] = useState(false);
+  const { t } = useLanguage();
+  const ti = t.timer;
 
   // Refs para cálculo robusto con Date.now() (resiste tabs en background)
   const startTimeRef    = useRef(null);
@@ -30,7 +33,7 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
     if (!isRunning || isPaused) return;
 
     intervalRef.current = setInterval(() => {
-      const elapsed  = (Date.now() - startTimeRef.current - totalPausedRef.current) / 1000;
+      const elapsed   = (Date.now() - startTimeRef.current - totalPausedRef.current) / 1000;
       const remaining = Math.max(0, initialTime - elapsed);
       const rounded   = Math.round(remaining);
 
@@ -40,7 +43,7 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
         clearInterval(intervalRef.current);
         handleFinish();
       }
-    }, 500); // Tick cada 500ms para mayor precisión
+    }, 500);
 
     return () => clearInterval(intervalRef.current);
   }, [isRunning, isPaused, initialTime, handleFinish]);
@@ -72,21 +75,21 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
   };
 
   const statusText = isRunning
-    ? (isPaused ? 'Pausa' : 'Meditando...')
-    : 'Listo para meditar';
+    ? (isPaused ? ti.paused : ti.meditating)
+    : ti.ready;
 
   return (
     <div className="timer-container animate-in">
       {!isRunning && (
         <button className="back-button-corner" onClick={onBack}>
-          ← Elegir tiempo
+          {ti.back}
         </button>
       )}
 
       <h1 className="timer-title">{statusText}</h1>
 
       {/* SVG Progress Ring */}
-      <div className="timer-ring-wrapper" role="timer" aria-label={`Tiempo restante: ${formatTime(timeLeft)}`}>
+      <div className="timer-ring-wrapper" role="timer" aria-label={`${ti.remaining}: ${formatTime(timeLeft)}`}>
         <svg className="timer-ring" viewBox="0 0 240 240">
           <circle className="timer-ring-bg"       cx="120" cy="120" r={RADIUS} />
           <circle
@@ -98,7 +101,7 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
         </svg>
         <div className="timer-display">
           <span className="timer-time">{formatTime(timeLeft)}</span>
-          <span className="timer-label">restante</span>
+          <span className="timer-label">{ti.remaining}</span>
         </div>
       </div>
 
@@ -106,25 +109,25 @@ const Timer = ({ initialTime, onFinish, onBack }) => {
       <div className="timer-controls">
         {!isRunning && timeLeft === initialTime && (
           <button className="btn-primary" onClick={handleStart}>
-            Iniciar meditación
+            {ti.start}
           </button>
         )}
 
         {isRunning && isPaused && (
           <button className="btn-primary" onClick={handleContinue}>
-            Continuar
+            {ti.continue}
           </button>
         )}
 
         {isRunning && !isPaused && timeLeft > 0 && (
           <button className="btn-ghost" onClick={handlePause}>
-            Pausar
+            {ti.pause}
           </button>
         )}
 
         {(isRunning || isPaused) && timeLeft > 0 && (
           <button className="btn-danger" onClick={handleStop}>
-            Detener
+            {ti.stop}
           </button>
         )}
       </div>

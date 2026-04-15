@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Timer from './Timer';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { apiRequest } from '../api/apiClient';
 import './NewMeditation.css';
 
@@ -9,6 +10,8 @@ const DURATIONS = [1, 5, 10, 15, 20, 30];
 
 const NewMeditation = () => {
   const { authToken, logout } = useAuth();
+  const { t } = useLanguage();
+  const nm = t.newMeditation;
   const navigate = useNavigate();
 
   const [durationInSeconds, setDurationInSeconds] = useState(0);
@@ -18,8 +21,8 @@ const NewMeditation = () => {
   const [meditationDate, setMeditationDate]       = useState(
     new Date().toISOString().substring(0, 10)
   );
-  const [saveError, setSaveError]   = useState('');
-  const [isSaving, setIsSaving]     = useState(false);
+  const [saveError, setSaveError]     = useState('');
+  const [isSaving, setIsSaving]       = useState(false);
   const [saveSuccess, setSaveSuccess] = useState(false);
 
   const selectTime = (minutes) => {
@@ -70,7 +73,7 @@ const NewMeditation = () => {
         logout();
         return;
       }
-      setSaveError(err.message || 'Error al guardar la meditación.');
+      setSaveError(err.message || nm.errorDefault);
     } finally {
       setIsSaving(false);
     }
@@ -93,14 +96,12 @@ const NewMeditation = () => {
 
     return (
       <div className="meditation-form-container animate-in">
-        <h1>Registro de meditación</h1>
-        <p className="subtitle">Guarda tu experiencia en el historial.</p>
+        <h1>{nm.formTitle}</h1>
+        <p className="subtitle">{nm.formSubtitle}</p>
 
         <form onSubmit={handleSubmit}>
           {saveSuccess && (
-            <p className="success-banner" role="status">
-              ¡Guardado! Redirigiendo al historial...
-            </p>
+            <p className="success-banner" role="status">{nm.saved}</p>
           )}
           {saveError && (
             <p className="error-banner" role="alert">{saveError}</p>
@@ -108,7 +109,7 @@ const NewMeditation = () => {
 
           <div className="form-row">
             <div className="form-group">
-              <label className="form-label" htmlFor="duration">Duración (min)</label>
+              <label className="form-label" htmlFor="duration">{nm.durationLabel}</label>
               <input
                 type="number"
                 id="duration"
@@ -118,7 +119,7 @@ const NewMeditation = () => {
               />
             </div>
             <div className="form-group">
-              <label className="form-label" htmlFor="date">Fecha</label>
+              <label className="form-label" htmlFor="date">{nm.dateLabel}</label>
               <input
                 type="date"
                 id="date"
@@ -131,14 +132,14 @@ const NewMeditation = () => {
           </div>
 
           <div className="form-group">
-            <label className="form-label" htmlFor="experience">Notas (opcional)</label>
+            <label className="form-label" htmlFor="experience">{nm.notesLabel}</label>
             <textarea
               id="experience"
               className="form-input"
               value={experience}
               onChange={(e) => setExperience(e.target.value)}
               rows="5"
-              placeholder="¿Cómo te sentiste? ¿Qué observaste?"
+              placeholder={nm.notesPlaceholder}
               style={{ resize: 'vertical' }}
             />
           </div>
@@ -150,7 +151,7 @@ const NewMeditation = () => {
               disabled={isSaving || saveSuccess}
               style={{ width: '100%' }}
             >
-              {isSaving ? 'Guardando...' : 'Guardar meditación'}
+              {isSaving ? nm.saving : nm.save}
             </button>
             <button
               type="button"
@@ -158,7 +159,7 @@ const NewMeditation = () => {
               onClick={goBackToSelection}
               style={{ width: '100%' }}
             >
-              Volver a selección de tiempo
+              {nm.backToSelection}
             </button>
           </div>
         </form>
@@ -169,8 +170,8 @@ const NewMeditation = () => {
   // ── Vista: Selección de duración (default) ────────────────────────────────
   return (
     <div className="selection-container animate-in">
-      <h1 className="selection-title">¿Cuánto tiempo tienes?</h1>
-      <p className="selection-subtitle">Elige una duración y comienza.</p>
+      <h1 className="selection-title">{nm.selectionTitle}</h1>
+      <p className="selection-subtitle">{nm.selectionSubtitle}</p>
 
       <div className="selection-grid">
         {DURATIONS.map((minutes) => (
@@ -178,7 +179,7 @@ const NewMeditation = () => {
             key={minutes}
             className="duration-btn"
             onClick={() => selectTime(minutes)}
-            aria-label={`Meditar ${minutes} minutos`}
+            aria-label={`${nm.selectionTitle} ${minutes} min`}
           >
             {minutes}
             <small>min</small>

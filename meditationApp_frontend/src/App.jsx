@@ -1,6 +1,7 @@
 import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AuthProvider, useAuth } from './context/AuthContext';
+import { LanguageProvider, useLanguage } from './context/LanguageContext';
 import Home from './components/Home';
 import NewMeditation from './components/NewMeditation';
 import History from './components/History';
@@ -12,12 +13,13 @@ import './App.css';
 // ─── RUTA PROTEGIDA ──────────────────────────────────────────────────────────
 const ProtectedRoute = ({ children }) => {
   const { isAuthenticated, isLoading } = useAuth();
+  const { t } = useLanguage();
 
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div style={{ color: 'var(--color-primary)', fontFamily: 'var(--font-serif)', fontSize: '1.5rem' }}>
-          Cargando...
+          {t.loading}
         </div>
       </div>
     );
@@ -29,9 +31,11 @@ const ProtectedRoute = ({ children }) => {
 // ─── APP ─────────────────────────────────────────────────────────────────────
 const App = () => (
   <Router>
-    <AuthProvider>
-      <AppLayout />
-    </AuthProvider>
+    <LanguageProvider>
+      <AuthProvider>
+        <AppLayout />
+      </AuthProvider>
+    </LanguageProvider>
   </Router>
 );
 
@@ -55,6 +59,7 @@ const AppLayout = () => (
 // ─── NAVBAR ──────────────────────────────────────────────────────────────────
 const AppNavbar = () => {
   const { isAuthenticated, logout } = useAuth();
+  const { lang, toggleLang, t } = useLanguage();
 
   return (
     <header className="main-header">
@@ -62,22 +67,31 @@ const AppNavbar = () => {
         <Link to="/" className="navbar-brand">Letting Be</Link>
 
         <nav className="navbar-links">
-          <Link to="/instructions" className="nav-link">Instrucciones</Link>
+          <Link to="/instructions" className="nav-link">{t.nav.instructions}</Link>
 
           {isAuthenticated ? (
             <>
-              <Link to="/new-meditation" className="nav-link">Meditar</Link>
-              <Link to="/history"        className="nav-link">Historial</Link>
-              <button onClick={logout}   className="nav-logout">Salir</button>
+              <Link to="/new-meditation" className="nav-link">{t.nav.meditate}</Link>
+              <Link to="/history"        className="nav-link">{t.nav.history}</Link>
+              <button onClick={logout}   className="nav-logout">{t.nav.logout}</button>
             </>
           ) : (
             <>
-              <Link to="/login"  className="nav-link">Entrar</Link>
+              <Link to="/login"  className="nav-link">{t.nav.login}</Link>
               <Link to="/signup" className="btn-primary" style={{ padding: '0.5rem 1.25rem', fontSize: '0.875rem' }}>
-                Registrarse
+                {t.nav.signup}
               </Link>
             </>
           )}
+
+          <button
+            onClick={toggleLang}
+            className="nav-link"
+            style={{ fontWeight: 600, letterSpacing: '0.05em', fontSize: '0.8rem' }}
+            aria-label="Switch language"
+          >
+            {lang === 'es' ? 'EN' : 'ES'}
+          </button>
         </nav>
       </div>
     </header>

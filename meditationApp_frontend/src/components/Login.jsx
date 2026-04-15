@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
+import { useLanguage } from '../context/LanguageContext';
 import { apiRequest } from '../api/apiClient';
 
 const Login = () => {
@@ -10,6 +11,8 @@ const Login = () => {
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const { handleAuth } = useAuth();
+  const { t } = useLanguage();
+  const l = t.login;
 
   const handleDemo = () => {
     setEmail('demo@demo.com');
@@ -30,7 +33,7 @@ const Login = () => {
       handleAuth(data.token, data.user);
       navigate('/');
     } catch (err) {
-      setError(err.message || 'Error de conexión con el servidor.');
+      setError(err.message || l.errorDefault);
     } finally {
       setIsLoading(false);
     }
@@ -46,7 +49,7 @@ const Login = () => {
           marginBottom: '1.75rem',
           color: 'var(--color-text)',
         }}>
-          Bienvenido de nuevo
+          {l.title}
         </h1>
 
         <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
@@ -65,28 +68,28 @@ const Login = () => {
           )}
 
           <div>
-            <label className="form-label" htmlFor="email">Email</label>
+            <label className="form-label" htmlFor="email">{l.emailLabel}</label>
             <input
               type="email"
               id="email"
               className="form-input"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
-              placeholder="tu@email.com"
+              placeholder={l.emailPlaceholder}
               required
               autoComplete="email"
             />
           </div>
 
           <div>
-            <label className="form-label" htmlFor="password">Contraseña</label>
+            <label className="form-label" htmlFor="password">{l.passwordLabel}</label>
             <input
               type="password"
               id="password"
               className="form-input"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              placeholder="••••••••"
+              placeholder={l.passwordPlaceholder}
               required
               autoComplete="current-password"
             />
@@ -98,7 +101,7 @@ const Login = () => {
             disabled={isLoading}
             style={{ width: '100%', marginTop: '0.5rem' }}
           >
-            {isLoading ? 'Entrando...' : 'Iniciar sesión'}
+            {isLoading ? l.submitting : l.submit}
           </button>
         </form>
 
@@ -111,7 +114,7 @@ const Login = () => {
           fontSize: '0.8rem',
         }}>
           <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--color-border)' }} />
-          o
+          {l.or}
           <hr style={{ flex: 1, border: 'none', borderTop: '1px solid var(--color-border)' }} />
         </div>
 
@@ -121,7 +124,7 @@ const Login = () => {
           onClick={handleDemo}
           style={{ width: '100%' }}
         >
-          Acceso demo
+          {l.demo}
         </button>
 
         <p style={{
@@ -131,8 +134,7 @@ const Login = () => {
           color: 'var(--color-text-muted)',
           lineHeight: 1.5,
         }}>
-          Cuenta compartida para explorar la app.<br />
-          No introduzcas datos personales.
+          {l.demoNote}
         </p>
 
         <p style={{
@@ -141,9 +143,9 @@ const Login = () => {
           fontSize: '0.9rem',
           color: 'var(--color-text-muted)',
         }}>
-          ¿No tienes cuenta?{' '}
+          {l.noAccount}{' '}
           <Link to="/signup" style={{ color: 'var(--color-primary)', fontWeight: 500, textDecoration: 'none' }}>
-            Regístrate
+            {l.register}
           </Link>
         </p>
       </div>
