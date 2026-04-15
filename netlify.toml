@@ -1,7 +1,9 @@
 [build]
-  base    = "meditationApp_frontend"
-  command = "npm run build"
+  command = "cd meditationApp_frontend && npm install && npm run build"
   publish = "meditationApp_frontend/dist"
+
+[build.environment]
+  NODE_VERSION = "20"
 
 [[redirects]]
   from   = "/*"
