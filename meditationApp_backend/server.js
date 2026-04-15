@@ -9,16 +9,20 @@ const PORT = process.env.PORT || 3000;
 
 // ─── CORS ────────────────────────────────────────────────────────────────────
 const allowedOrigins = [
-  process.env.FRONTEND_URL || 'http://localhost:5173',
-  'https://meditation-app-lb.netlify.app', // ajusta al dominio real del frontend
+  'http://localhost:5173',
+  'http://localhost:4173',
+  'https://letbemeditation.netlify.app',
+  // Variable de entorno para cualquier dominio adicional (staging, custom domain, etc.)
+  ...(process.env.FRONTEND_URL ? [process.env.FRONTEND_URL] : []),
 ];
 
 app.use(cors({
   origin: (origin, callback) => {
-    // Permitir requests sin origin (ej. Postman, curl en dev)
+    // Permitir requests sin origin (Postman, curl, Render health checks)
     if (!origin || allowedOrigins.includes(origin)) {
       callback(null, true);
     } else {
+      console.warn(`[CORS] Origin bloqueado: ${origin}`);
       callback(new Error(`CORS: origin ${origin} no permitido`));
     }
   },
